@@ -1,0 +1,27 @@
+---
+apiVersion: helm.fluxcd.io/v1
+kind: HelmRelease
+metadata:
+  name: cds-api
+  namespace: app
+  annotations:
+    flux.weave.works/automated: "true"
+    filter.fluxcd.io/chart-image: glob:0.0.0-master-*
+    registry.fluxcd.io/chart-image: image.registry
+    repository.fluxcd.io/chart-image: image.path
+    tag.fluxcd.io/chart-image: image.tag
+spec:
+  helmVersion: v3
+  releaseName: cds-api
+  chart:
+    repository: https://artifactory.datapwn.com/artifactory/tlnd-helm-dev/
+    name: cds-service-api 
+    version: 0.2.0
+  values:
+    image:
+      registry: artifactory.datapwn.com
+      path: tlnd-docker-dev/talend/sandbox/cds/cds-service-api
+      tag: 0.0.0-master-20210204124942
+    ingress:
+      enabled: false
+    registryKey: artifactory-registry

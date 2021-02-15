@@ -1,0 +1,31 @@
+---
+apiVersion: helm.fluxcd.io/v1
+kind: HelmRelease
+metadata:
+  name: lil-app
+  namespace: app
+  annotations:
+    flux.weave.works/automated: "true"
+    filter.fluxcd.io/chart-image: glob:0.0.1-*
+    registry.fluxcd.io/chart-image: image.registry
+    repository.fluxcd.io/chart-image: image.path
+    tag.fluxcd.io/chart-image: image.tag
+spec:
+  releaseName: lil-app
+  timeout: 900
+  rollback:
+    enable: true
+    force: true
+  chart:
+    repository: https://artifactory.datapwn.com/artifactory/tlnd-helm-dev/
+    name: lil-todo
+    version: 0.0.1
+  values:
+    image:
+      registry: artifactory.datapwn.com
+      path: tlnd-docker-dev/talend/sandbox/lil-app
+      tag: 0.0.1-20210210-130853
+    ingress:
+      enabled: false
+    imagePullSecrets:
+    - name: artifactory-registry
